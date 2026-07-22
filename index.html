@@ -6,7 +6,7 @@
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>2026 公司業務分析儀表板</title>
-<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:clamp(.5rem,1.5vw,1.5rem);background:inherit}iframe{display:block;width:100%;max-width:1600px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
 </head>
 <body>
 <iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="2026 公司業務分析儀表板" srcdoc="&lt;!doctype html&gt;
@@ -979,6 +979,19 @@ html&gt;body{padding:0}&lt;/style&gt;
     #business-analysis-dashboard .table td,
     #business-analysis-dashboard .table th { vertical-align: top; }
     #business-analysis-dashboard .table td.text-end { font-variant-numeric: tabular-nums; }
+    #business-analysis-dashboard #drilldown-section .table { min-width: 1480px; }
+    #business-analysis-dashboard #drilldown-section .table th { white-space: nowrap; }
+    #business-analysis-dashboard #drilldown-section .table td:nth-child(1),
+    #business-analysis-dashboard #drilldown-section .table td:nth-child(2),
+    #business-analysis-dashboard #drilldown-section .table td:nth-child(3),
+    #business-analysis-dashboard #drilldown-section .table td:nth-child(5),
+    #business-analysis-dashboard #drilldown-section .table td:nth-child(n+6) { white-space: nowrap; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(1) { min-width: 210px; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(2) { min-width: 90px; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(3) { min-width: 90px; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(4) { min-width: 250px; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(5) { min-width: 80px; }
+    #business-analysis-dashboard #drilldown-section .table th:nth-child(n+6) { min-width: 125px; }
     #business-analysis-dashboard .chart-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -998,16 +1011,37 @@ html&gt;body{padding:0}&lt;/style&gt;
     #business-analysis-dashboard .chart-row-button {
       width: 100%;
       display: grid;
-      grid-template-columns: minmax(108px, .8fr) minmax(220px, 3fr) minmax(105px, .8fr);
+      grid-template-columns: minmax(150px, .9fr) minmax(260px, 3fr) minmax(120px, .8fr);
       gap: 12px;
       align-items: center;
       padding: 4px;
       border: 0;
       border-radius: calc(var(--radius) * .7);
       background: transparent;
-      color: var(--foreground);
+      color: var(--card-foreground);
       text-align: left;
       cursor: pointer;
+    }
+    #business-analysis-dashboard .chart-row-label {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      color: var(--card-foreground) !important;
+      opacity: 1;
+      visibility: visible;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    #business-analysis-dashboard .chart-row-label strong {
+      color: var(--card-foreground) !important;
+      font-weight: 500;
+    }
+    #business-analysis-dashboard .chart-row-subtitle {
+      color: var(--card-foreground) !important;
+      opacity: .68;
     }
     #business-analysis-dashboard .chart-row-button:hover,
     #business-analysis-dashboard .chart-row-button:focus-visible { background: var(--muted); outline: none; }
@@ -1118,7 +1152,15 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-bu-metric=&quot;cases&quot;&gt;案件數&lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;chart-shell&quot; id=&quot;actual-bu-chart&quot; role=&quot;img&quot; aria-label=&quot;可互動的 BU 指標橫條圖&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;chart-shell&quot; id=&quot;actual-bu-chart&quot; role=&quot;img&quot; aria-label=&quot;可互動的 BU 指標橫條圖&quot;&gt;
+      &lt;div class=&quot;chart-rows&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;智城組&quot; data-drill-condition=&quot;revenue&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;智城組&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：邱怡禎&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:100%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;54.002 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;創新組&quot; data-drill-condition=&quot;revenue&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;創新組&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：施淳齡&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:72.6%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;39.187 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;跨界組&quot; data-drill-condition=&quot;revenue&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;跨界組&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：王銘源&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:51.7%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;27.904 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;智方組&quot; data-drill-condition=&quot;revenue&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;智方組&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：羅文珊&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:42.7%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;23.076 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;RD Team&quot; data-drill-condition=&quot;revenue&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;RD Team&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：未提供&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:2.2%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;1.200 百萬元&lt;/strong&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
     &lt;p class=&quot;chart-hint text-small&quot;&gt;操作：切換指標；滑入看營業收入、目前總損益與案件結構；點擊 BU 查看明細。&lt;/p&gt;
   &lt;/section&gt;
 
@@ -1334,12 +1376,20 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;select class=&quot;form-select&quot; id=&quot;customer-metric&quot;&gt;&lt;option value=&quot;revenue&quot;&gt;營業收入&lt;/option&gt;&lt;option value=&quot;profit&quot;&gt;目前總損益&lt;/option&gt;&lt;option value=&quot;cases&quot;&gt;有營業收入案件數&lt;/option&gt;&lt;/select&gt;
         &lt;/label&gt;
         &lt;label class=&quot;form-label&quot; for=&quot;customer-limit&quot;&gt;顯示範圍
-          &lt;select class=&quot;form-select&quot; id=&quot;customer-limit&quot;&gt;&lt;option value=&quot;10&quot;&gt;前 10 名&lt;/option&gt;&lt;option value=&quot;20&quot;&gt;前 20 名&lt;/option&gt;&lt;option value=&quot;39&quot;&gt;全部 39 名&lt;/option&gt;&lt;/select&gt;
+          &lt;select class=&quot;form-select&quot; id=&quot;customer-limit&quot;&gt;&lt;option value=&quot;10&quot;&gt;前 10 名&lt;/option&gt;&lt;option value=&quot;20&quot;&gt;前 20 名&lt;/option&gt;&lt;option value=&quot;38&quot;&gt;全部 38 名&lt;/option&gt;&lt;/select&gt;
         &lt;/label&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;chart-shell&quot; id=&quot;actual-customer-chart&quot; role=&quot;img&quot; aria-label=&quot;可互動的客戶排行橫條圖&quot;&gt;&lt;/div&gt;
-    &lt;p class=&quot;chart-hint text-small&quot; id=&quot;customer-chart-summary&quot;&gt;前五大與前十大集中度計算中…&lt;/p&gt;
+    &lt;div class=&quot;chart-shell&quot; id=&quot;actual-customer-chart&quot; role=&quot;img&quot; aria-label=&quot;可互動的客戶排行橫條圖&quot;&gt;
+      &lt;div class=&quot;chart-rows&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;桃園市社會住宅及都市更新中心&quot; data-drill-condition=&quot;all&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;桃園市社會住宅及都市更新中心&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:100%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;16.119 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;財團法人國家高速網路計算中心&quot; data-drill-condition=&quot;all&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;財團法人國家高速網路計算中心&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:98.9%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;15.945 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;經濟部地質調查及礦業管理中心&quot; data-drill-condition=&quot;all&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;經濟部地質調查及礦業管理中心&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:78.5%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;12.659 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;農業部農村發展及水土保持署&quot; data-drill-condition=&quot;all&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;農業部農村發展及水土保持署&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:53%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;8.537 百萬元&lt;/strong&gt;&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;桃園市政府環境保護局&quot; data-drill-condition=&quot;all&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;桃園市政府環境保護局&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:51.8%;background:var(--viz-series-1)&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;8.350 百萬元&lt;/strong&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;chart-hint text-small&quot; id=&quot;customer-chart-summary&quot;&gt;共 38 個有營業收入客戶；前五大占 42.4%，前十大占 65.5%。&lt;/p&gt;
   &lt;/section&gt;
 
   &lt;section aria-labelledby=&quot;year-heading&quot;&gt;
@@ -1384,7 +1434,14 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;chart-shell scatter-wrap&quot;&gt;
-      &lt;svg id=&quot;project-scatter&quot; class=&quot;project-scatter&quot; viewBox=&quot;0 0 760 420&quot; role=&quot;img&quot; aria-label=&quot;可互動的專案營業收入與目前損益率散布圖&quot;&gt;&lt;/svg&gt;
+      &lt;svg id=&quot;project-scatter&quot; class=&quot;project-scatter&quot; viewBox=&quot;0 0 760 420&quot; role=&quot;img&quot; aria-label=&quot;可互動的專案營業收入與目前損益率散布圖&quot;&gt;
+        &lt;title&gt;專案營業收入與目前損益率散布圖&lt;/title&gt;
+        &lt;line class=&quot;grid-line&quot; x1=&quot;70&quot; y1=&quot;55&quot; x2=&quot;730&quot; y2=&quot;55&quot;&gt;&lt;/line&gt;&lt;line class=&quot;grid-line&quot; x1=&quot;70&quot; y1=&quot;125&quot; x2=&quot;730&quot; y2=&quot;125&quot;&gt;&lt;/line&gt;&lt;line class=&quot;grid-line&quot; x1=&quot;70&quot; y1=&quot;195&quot; x2=&quot;730&quot; y2=&quot;195&quot;&gt;&lt;/line&gt;&lt;line class=&quot;grid-line&quot; x1=&quot;70&quot; y1=&quot;265&quot; x2=&quot;730&quot; y2=&quot;265&quot;&gt;&lt;/line&gt;&lt;line class=&quot;zero-line&quot; x1=&quot;70&quot; y1=&quot;335&quot; x2=&quot;730&quot; y2=&quot;335&quot;&gt;&lt;/line&gt;
+        &lt;line class=&quot;axis-line&quot; x1=&quot;70&quot; y1=&quot;30&quot; x2=&quot;70&quot; y2=&quot;365&quot;&gt;&lt;/line&gt;&lt;line class=&quot;axis-line&quot; x1=&quot;70&quot; y1=&quot;365&quot; x2=&quot;730&quot; y2=&quot;365&quot;&gt;&lt;/line&gt;
+        &lt;text class=&quot;tick text-small&quot; x=&quot;58&quot; y=&quot;59&quot; text-anchor=&quot;end&quot;&gt;40%&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;58&quot; y=&quot;129&quot; text-anchor=&quot;end&quot;&gt;30%&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;58&quot; y=&quot;199&quot; text-anchor=&quot;end&quot;&gt;20%&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;58&quot; y=&quot;269&quot; text-anchor=&quot;end&quot;&gt;10%&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;58&quot; y=&quot;339&quot; text-anchor=&quot;end&quot;&gt;0%&lt;/text&gt;
+        &lt;text class=&quot;tick text-small&quot; x=&quot;70&quot; y=&quot;387&quot; text-anchor=&quot;middle&quot;&gt;0&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;235&quot; y=&quot;387&quot; text-anchor=&quot;middle&quot;&gt;2.5&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;400&quot; y=&quot;387&quot; text-anchor=&quot;middle&quot;&gt;5.0&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;565&quot; y=&quot;387&quot; text-anchor=&quot;middle&quot;&gt;7.5&lt;/text&gt;&lt;text class=&quot;tick text-small&quot; x=&quot;730&quot; y=&quot;387&quot; text-anchor=&quot;middle&quot;&gt;10.0&lt;/text&gt;&lt;text class=&quot;axis-label text-small&quot; x=&quot;400&quot; y=&quot;412&quot; text-anchor=&quot;middle&quot;&gt;營業收入（百萬元）&lt;/text&gt;
+        &lt;circle class=&quot;point&quot; cx=&quot;575&quot; cy=&quot;94&quot; r=&quot;11&quot; fill=&quot;var(--viz-series-1)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;357&quot; cy=&quot;105&quot; r=&quot;9&quot; fill=&quot;var(--viz-series-1)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;216&quot; cy=&quot;69&quot; r=&quot;8&quot; fill=&quot;var(--viz-series-4)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;622&quot; cy=&quot;164&quot; r=&quot;12&quot; fill=&quot;var(--viz-series-2)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;664&quot; cy=&quot;230&quot; r=&quot;12&quot; fill=&quot;var(--viz-series-2)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;621&quot; cy=&quot;198&quot; r=&quot;12&quot; fill=&quot;var(--viz-series-1)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;436&quot; cy=&quot;279&quot; r=&quot;10&quot; fill=&quot;var(--viz-series-3)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;268&quot; cy=&quot;308&quot; r=&quot;8&quot; fill=&quot;var(--viz-series-2)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;80&quot; cy=&quot;348&quot; r=&quot;6&quot; fill=&quot;var(--destructive)&quot;&gt;&lt;/circle&gt;&lt;circle class=&quot;point&quot; cx=&quot;90&quot; cy=&quot;352&quot; r=&quot;6&quot; fill=&quot;var(--destructive)&quot;&gt;&lt;/circle&gt;
+      &lt;/svg&gt;
     &lt;/div&gt;
     &lt;p class=&quot;chart-hint text-small&quot; id=&quot;scatter-summary&quot;&gt;圓點大小代表營業收入；紅色圓點為目前總損益負數。&lt;/p&gt;
   &lt;/section&gt;
@@ -1516,7 +1573,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         }[metric];
         const rows = [...buStats].sort((a, b) =&gt; b[metric] - a[metric]);
         const max = Math.max(...rows.map(row =&gt; Math.abs(row[metric])), 1);
-        root.querySelector(&quot;#actual-bu-chart&quot;).innerHTML = `&lt;div class=&quot;chart-rows&quot;&gt;${rows.map(row =&gt; `&lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;${esc(row.b)}&quot; data-drill-condition=&quot;${meta.condition}&quot; data-bu-name=&quot;${esc(row.b)}&quot;&gt;&lt;span&gt;&lt;strong&gt;${esc(row.b)}&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-muted text-small&quot;&gt;${esc(leaders[row.b])}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:${Math.max(2, Math.abs(row[metric]) / max * 100)}%;background:${row[metric] &lt; 0 ? &quot;var(--destructive)&quot; : meta.color}&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;${meta.format(row[metric])} ${meta.unit}&lt;/strong&gt;&lt;/button&gt;`).join(&quot;&quot;)}&lt;/div&gt;`;
+        root.querySelector(&quot;#actual-bu-chart&quot;).innerHTML = `&lt;div class=&quot;chart-rows&quot;&gt;${rows.map(row =&gt; `&lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;bu&quot; data-drill-value=&quot;${esc(row.b)}&quot; data-drill-condition=&quot;${meta.condition}&quot; data-bu-name=&quot;${esc(row.b)}&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;&lt;strong&gt;${esc(row.b)}&lt;/strong&gt;&lt;span class=&quot;chart-row-subtitle text-small&quot;&gt;Leader：${esc(leaders[row.b])}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:${Math.max(2, Math.abs(row[metric]) / max * 100)}%;background:${row[metric] &lt; 0 ? &quot;var(--destructive)&quot; : meta.color}&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;${meta.format(row[metric])} ${meta.unit}&lt;/strong&gt;&lt;/button&gt;`).join(&quot;&quot;)}&lt;/div&gt;`;
         root.querySelectorAll(&quot;[data-bu-metric]&quot;).forEach(button =&gt; {
           const active = button.dataset.buMetric === metric;
           button.classList.toggle(&quot;btn-primary&quot;, active);
@@ -1524,6 +1581,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         });
         root.querySelectorAll(&quot;#actual-bu-chart [data-bu-name]&quot;).forEach(button =&gt; {
           const row = buStats.find(item =&gt; item.bu === button.dataset.buName);
+          if (!row) return;
           const tip = `&lt;strong&gt;${esc(row.b)}｜${esc(leaders[row.b])}&lt;/strong&gt;&lt;br&gt;營業收入 ${fmtM(row.revenue)} 百萬元&lt;br&gt;目前總損益 ${fmtM(row.profit)} 百萬元（${fmtPct(row.margin)}）&lt;br&gt;總案件 ${row.cases} 筆｜有營業收入 ${row.revenueCases} 筆&lt;br&gt;維運成本 ${fmtM(row.maintenance)} 百萬元`;
           button.addEventListener(&quot;pointerenter&quot;, event =&gt; showTooltip(event, tip));
           button.addEventListener(&quot;pointermove&quot;, event =&gt; showTooltip(event, tip));
@@ -1548,12 +1606,13 @@ html&gt;body{padding:0}&lt;/style&gt;
         const rows = all.slice(0, limit);
         const max = Math.max(...rows.map(row =&gt; Math.abs(row[metric])), 1);
         const totalRevenue = all.reduce((sum, row) =&gt; sum + row.revenue, 0);
-        root.querySelector(&quot;#actual-customer-chart&quot;).innerHTML = `&lt;div class=&quot;chart-rows&quot;&gt;${rows.map(row =&gt; `&lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;${esc(row.customer)}&quot; data-drill-condition=&quot;all&quot; data-customer-name=&quot;${esc(row.customer)}&quot;&gt;&lt;span&gt;${esc(row.customer)}&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:${Math.max(2, Math.abs(row[metric]) / max * 100)}%;background:${row[metric] &lt; 0 ? &quot;var(--destructive)&quot; : &quot;var(--viz-series-1)&quot;}&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;${meta.format(row[metric])} ${meta.unit}&lt;/strong&gt;&lt;/button&gt;`).join(&quot;&quot;)}&lt;/div&gt;`;
+        root.querySelector(&quot;#actual-customer-chart&quot;).innerHTML = `&lt;div class=&quot;chart-rows&quot;&gt;${rows.map(row =&gt; `&lt;button type=&quot;button&quot; class=&quot;chart-row-button&quot; data-drill-dim=&quot;customer&quot; data-drill-value=&quot;${esc(row.customer)}&quot; data-drill-condition=&quot;all&quot; data-customer-name=&quot;${esc(row.customer)}&quot;&gt;&lt;span class=&quot;chart-row-label&quot;&gt;${esc(row.customer)}&lt;/span&gt;&lt;span class=&quot;chart-bar-track&quot;&gt;&lt;span class=&quot;chart-bar-fill&quot; style=&quot;display:block;width:${Math.max(2, Math.abs(row[metric]) / max * 100)}%;background:${row[metric] &lt; 0 ? &quot;var(--destructive)&quot; : &quot;var(--viz-series-1)&quot;}&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;chart-row-value&quot;&gt;${meta.format(row[metric])} ${meta.unit}&lt;/strong&gt;&lt;/button&gt;`).join(&quot;&quot;)}&lt;/div&gt;`;
         const top5 = all.slice(0, 5).reduce((sum, row) =&gt; sum + row.revenue, 0) / totalRevenue;
         const top10 = all.slice(0, 10).reduce((sum, row) =&gt; sum + row.revenue, 0) / totalRevenue;
         root.querySelector(&quot;#customer-chart-summary&quot;).textContent = `共 ${all.length} 個有營業收入客戶；前五大占 ${fmtPct(top5)}，前十大占 ${fmtPct(top10)}。`;
         root.querySelectorAll(&quot;#actual-customer-chart [data-customer-name]&quot;).forEach(button =&gt; {
           const row = all.find(item =&gt; item.customer === button.dataset.customerName);
+          if (!row) return;
           const tip = `&lt;strong&gt;${esc(row.customer)}&lt;/strong&gt;&lt;br&gt;營業收入 ${fmtM(row.revenue)} 百萬元&lt;br&gt;目前總損益 ${fmtM(row.profit)} 百萬元&lt;br&gt;有營業收入案件 ${row.cases} 筆`;
           button.addEventListener(&quot;pointerenter&quot;, event =&gt; showTooltip(event, tip));
           button.addEventListener(&quot;pointermove&quot;, event =&gt; showTooltip(event, tip));
@@ -1668,11 +1727,18 @@ html&gt;body{padding:0}&lt;/style&gt;
           cell.append(button);
         });
       });
-      root.querySelectorAll(&quot;[data-bu-metric]&quot;).forEach(button =&gt; button.addEventListener(&quot;click&quot;, () =&gt; renderBuChart(button.dataset.buMetric)));
-      root.querySelector(&quot;#customer-metric&quot;).addEventListener(&quot;change&quot;, renderCustomerChart);
-      root.querySelector(&quot;#customer-limit&quot;).addEventListener(&quot;change&quot;, renderCustomerChart);
-      root.querySelector(&quot;#scatter-bu&quot;).addEventListener(&quot;change&quot;, renderScatter);
-      root.querySelector(&quot;#scatter-risk&quot;).addEventListener(&quot;change&quot;, renderScatter);
+      function safeRender(containerSelector, renderer) {
+        try { renderer(); }
+        catch (error) {
+          const container = root.querySelector(containerSelector);
+          if (container) container.innerHTML = `&lt;p class=&quot;text-destructive&quot;&gt;圖表載入失敗：${esc(error.message || error)}&lt;/p&gt;`;
+        }
+      }
+      root.querySelectorAll(&quot;[data-bu-metric]&quot;).forEach(button =&gt; button.addEventListener(&quot;click&quot;, () =&gt; safeRender(&quot;#actual-bu-chart&quot;, () =&gt; renderBuChart(button.dataset.buMetric))));
+      root.querySelector(&quot;#customer-metric&quot;).addEventListener(&quot;change&quot;, () =&gt; safeRender(&quot;#actual-customer-chart&quot;, renderCustomerChart));
+      root.querySelector(&quot;#customer-limit&quot;).addEventListener(&quot;change&quot;, () =&gt; safeRender(&quot;#actual-customer-chart&quot;, renderCustomerChart));
+      root.querySelector(&quot;#scatter-bu&quot;).addEventListener(&quot;change&quot;, () =&gt; safeRender(&quot;#project-scatter&quot;, renderScatter));
+      root.querySelector(&quot;#scatter-risk&quot;).addEventListener(&quot;change&quot;, () =&gt; safeRender(&quot;#project-scatter&quot;, renderScatter));
       root.querySelectorAll(&quot;#actual-year-grid .year-item&quot;).forEach(item =&gt; {
         const label = item.querySelector(&quot;.year-title strong&quot;);
         if (!label) return;
@@ -1687,9 +1753,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         label.textContent = &quot;&quot;;
         label.append(button);
       });
-      renderBuChart(&quot;revenue&quot;);
-      renderCustomerChart();
-      renderScatter();
+      safeRender(&quot;#actual-bu-chart&quot;, () =&gt; renderBuChart(&quot;revenue&quot;));
+      safeRender(&quot;#actual-customer-chart&quot;, renderCustomerChart);
+      safeRender(&quot;#project-scatter&quot;, renderScatter);
       populateValues(&quot;智城組&quot;);
       conditionSelect.value = &quot;revenue&quot;;
       renderDetail();
